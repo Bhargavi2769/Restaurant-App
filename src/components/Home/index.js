@@ -88,7 +88,7 @@ class Home extends Component {
 
     const filteredApps = allDishes.filter(
       eachSearchedApp =>
-        eachSearchedApp.categoryDishes.menuCategoryId === activeTabId,
+        eachSearchedApp.menuCategoryId === activeTabId,
     )
 
     return filteredApps
