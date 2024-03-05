@@ -1,4 +1,5 @@
 import {Component} from 'react'
+import {AiOutlineShoppingCart} from 'react-icons/ai'
 import './index.css'
 import TabItem from '../TabItem'
 import AppItem from '../AppItem'
@@ -16,6 +17,7 @@ class Home extends Component {
     displayData: [],
     restName: '',
     activeTabId: 0,
+    filteredApp: [],
   }
 
   componentDidMount() {
@@ -35,7 +37,7 @@ class Home extends Component {
       // console.log(response)
       const data = await response.json()
 
-      console.log(data)
+      // console.log('data : ', data)
 
       const array = data.map(each => ({
         tableMenuList: each.table_menu_list,
@@ -66,7 +68,7 @@ class Home extends Component {
         menuCategoryImage: each.menu_category_image,
         nexturl: each.nexturl,
       }))
-      console.log('format:-->', format)
+      // console.log('format:-->', format)
       const single = format[0]
       const activeId = single.menuCategoryId
       const {categoryDishes} = single
@@ -83,21 +85,31 @@ class Home extends Component {
     this.setState({activeTabId: tabId})
   }
 
+  setFilterdApp = filteredApps => {
+    this.setState({filteredApp: filteredApps})
+  }
+
   getActiveTabApps = activeTabId => {
-    const {allDishes, displayData} = this.state
+    const {allDishes} = this.state
 
     const filteredApps = allDishes.filter(
-      eachSearchedApp =>
-        eachSearchedApp.menuCategoryId === activeTabId,
+      eachSearchedApp => eachSearchedApp.menuCategoryId === activeTabId,
     )
 
-    return filteredApps
+    const ds = filteredApps.map(each => each)
+
+    return ds
+
+    // return filteredApps
   }
 
   renderRestaurantDetails = () => {
-    const {allDishes, activeTabId} = this.state
+    const {allDishes, activeTabId, displayData, filteredApp} = this.state
     const filteredApps = this.getActiveTabApps(activeTabId)
-    console.log(filteredApps)
+    console.log('filteredApps : ', filteredApps)
+    console.log('displayData: ', displayData)
+
+    console.log(filteredApp)
 
     return (
       <div>
@@ -107,13 +119,14 @@ class Home extends Component {
               key={eachTab.menuCategoryId}
               tabDetails={eachTab}
               setActiveTabId={this.setActiveTabId}
+              setFilterdApp={this.setFilterdApp}
               isActive={activeTabId === eachTab.menuCategoryId}
             />
           ))}
         </ul>
-        <ul className="apps-list">
-          {filteredApps.map(eachApp => (
-            <AppItem key={eachApp.dishId} appDetails={eachApp} />
+        <ul className="list-con">
+          {displayData.map(each => (
+            <AppItem key={each.dishId} dishDetails={each} />
           ))}
         </ul>
       </div>
@@ -121,17 +134,22 @@ class Home extends Component {
   }
 
   render() {
-    const {allDishes, restName, activeTabId} = this.state
-    console.log(allDishes)
-    // console.log(displayData)
-    console.log(activeTabId)
+    const {allDishes, restName, activeTabId, displayData} = this.state
+    console.log('allDishes : ', allDishes)
+    console.log('displayData : ', displayData)
+    console.log('activeTabId : ', activeTabId)
+    const q = 0
 
     return (
       <>
         <div className="container">
           <div className="header-container">
             <h1 className="header-heading">{restName}</h1>
-            <p className="header-txt">My Orders</p>
+            <div>
+              <p className="header-txt">My Orders</p>
+              <AiOutlineShoppingCart className="cart" />
+              <p className="cart-text">{q}</p>
+            </div>
           </div>
           {this.renderRestaurantDetails()}
 
