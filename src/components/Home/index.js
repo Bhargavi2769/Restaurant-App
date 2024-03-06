@@ -17,6 +17,7 @@ class Home extends Component {
     displayData: [],
     restName: '',
     activeTabId: 0,
+    cartCount: 0, // New state for cart count
   }
 
   componentDidMount() {
@@ -84,6 +85,10 @@ class Home extends Component {
     this.setState({activeTabId: tabId, displayData: dishesDet})
   }
 
+  updateCartCount = count => {
+    this.setState({cartCount: count})
+  }
+
   renderRestaurantDetails = () => {
     const {allDishes, activeTabId, displayData} = this.state
 
@@ -102,7 +107,12 @@ class Home extends Component {
         </ul>
         <ul className="list-con">
           {displayData.map(each => (
-            <AppItem key={each.dishId} dishDetails={each} />
+            <AppItem
+              key={each.dishId}
+              dishDetails={each}
+              updateCartCount={this.updateCartCount}
+              cartCount={this.state.cartCount}
+            />
           ))}
         </ul>
       </div>
@@ -110,7 +120,8 @@ class Home extends Component {
   }
 
   render() {
-    const {allDishes, restName, activeTabId, displayData} = this.state
+    const {allDishes, restName, activeTabId} = this.state
+    const {cartCount, displayData} = this.state
     console.log('allDishes : ', allDishes)
     console.log('displayData : ', displayData)
     console.log('activeTabId : ', activeTabId)
@@ -124,7 +135,8 @@ class Home extends Component {
             <div>
               <p className="header-txt">My Orders</p>
               <AiOutlineShoppingCart className="cart" />
-              <p className="cart-text">{q}</p>
+              <p className="cart-text">{cartCount}</p>{' '}
+              {/* Display cart count */}
             </div>
           </div>
           {this.renderRestaurantDetails()}
@@ -133,7 +145,6 @@ class Home extends Component {
         </div>
       </>
     )
-    
   }
 }
 
