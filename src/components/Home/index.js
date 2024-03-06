@@ -17,7 +17,6 @@ class Home extends Component {
     displayData: [],
     restName: '',
     activeTabId: 0,
-    filteredApp: [],
   }
 
   componentDidMount() {
@@ -81,35 +80,12 @@ class Home extends Component {
     }
   }
 
-  setActiveTabId = tabId => {
-    this.setState({activeTabId: tabId})
-  }
-
-  setFilterdApp = filteredApps => {
-    this.setState({filteredApp: filteredApps})
-  }
-
-  getActiveTabApps = activeTabId => {
-    const {allDishes} = this.state
-
-    const filteredApps = allDishes.filter(
-      eachSearchedApp => eachSearchedApp.menuCategoryId === activeTabId,
-    )
-
-    const ds = filteredApps.map(each => each)
-
-    return ds
-
-    // return filteredApps
+  setActiveTabId = (tabId, dishesDet) => {
+    this.setState({activeTabId: tabId, displayData: dishesDet})
   }
 
   renderRestaurantDetails = () => {
-    const {allDishes, activeTabId, displayData, filteredApp} = this.state
-    const filteredApps = this.getActiveTabApps(activeTabId)
-    console.log('filteredApps : ', filteredApps)
-    console.log('displayData: ', displayData)
-
-    console.log(filteredApp)
+    const {allDishes, activeTabId, displayData} = this.state
 
     return (
       <div>
@@ -119,7 +95,7 @@ class Home extends Component {
               key={eachTab.menuCategoryId}
               tabDetails={eachTab}
               setActiveTabId={this.setActiveTabId}
-              setFilterdApp={this.setFilterdApp}
+              setDisplayData={this.setDisplayData}
               isActive={activeTabId === eachTab.menuCategoryId}
             />
           ))}
