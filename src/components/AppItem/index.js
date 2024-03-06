@@ -5,6 +5,7 @@ const AppItem = props => {
   const {dishDetails} = props
   const {
     dishName,
+    dishAvailability,
     dishImage,
     dishCurrency,
     dishPrice,
@@ -22,18 +23,22 @@ const AppItem = props => {
           {dishCurrency} {dishPrice}
         </p>
         <p>{dishDescription}</p>
-        <div className="button-custom">
-          <button type="button" className="button-class">
-            -
-          </button>
-          <p className="button-text">{c}</p>
-          <button type="button" className="button-class">
-            +
-          </button>
-        </div>
+        {dishAvailability ? (
+          <div className="button-custom">
+            <button type="button" className="button-class">
+              -
+            </button>
+            <p className="button-text">{c}</p>
+            <button type="button" className="button-class">
+              +
+            </button>
+          </div>
+        ) : (
+          <p>Not available</p>
+        )}
       </div>
       <div>
-        <p className="claories-text">{dishCalories}claories</p>
+        <p className="claories-text">{dishCalories} claories</p>
       </div>
       <img className="app-image" src={dishImage} alt={dishName} />
     </li>
@@ -41,4 +46,3 @@ const AppItem = props => {
 }
 
 export default AppItem
-
